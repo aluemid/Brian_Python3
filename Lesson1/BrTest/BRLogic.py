@@ -1,5 +1,6 @@
 import itertools
 
+
 # rewrite CS50's Introduction to Artificial Intelligence with python class.2 for self studying.
 
 class Sentence():
@@ -9,7 +10,7 @@ class Sentence():
         raise Exception("nothing to evaluate")
 
     def formula(self):
-        """Returns string formula representing logical sentence. """
+        """Returns string formula representing logical sentence."""
         return ""
 
     def symbols(self):
@@ -19,14 +20,13 @@ class Sentence():
     @classmethod
     def validate(cls, sentence):
         if not isinstance(sentence, Sentence):
-            raise TypeError('must be a logical sentence. ')
+            raise TypeError("must be a logical sentence")
 
     @classmethod
     def parenthesize(cls, s):
-        """Parenthensizes on expression if not already parenthensized. """
-
+        """Parenthesizes an expression if not already parenthesized."""
         def balanced(s):
-            """Checks if a string has balanced parentheses. """
+            """Checks if a string has balanced parentheses."""
             count = 0
             for c in s:
                 if c == "(":
@@ -35,15 +35,13 @@ class Sentence():
                     if count <= 0:
                         return False
                     count -= 1
-
             return count == 0
-
         if not len(s) or s.isalpha() or (
-                s[0] == "(" and s[-1] == ")" and balanced(s[1:-1])
+            s[0] == "(" and s[-1] == ")" and balanced(s[1:-1])
         ):
             return s
         else:
-            return f"({s}"
+            return f"({s})"
 
 
 class Symbol(Sentence):
@@ -66,11 +64,12 @@ class Symbol(Sentence):
         except KeyError:
             raise EvaluationException(f"variable {self.name} not in model")
 
-    def formular(self):
+    def formula(self):
         return self.name
 
     def symbols(self):
         return {self.name}
+
 
 
 class Not(Sentence):
@@ -82,7 +81,7 @@ class Not(Sentence):
         return isinstance(other, Not) and self.operand == other.operand
 
     def __hash__(self):
-        return hash(("Not", hash(self.operand)))
+        return hash(("not", hash(self.operand)))
 
     def __repr__(self):
         return f"Not({self.operand})"
@@ -140,6 +139,9 @@ class And(Sentence):
         return " ∧ ".join([Sentence.parenthesize(conjunct.formula())
                            for conjunct in self.conjuncts])
 
+    def symbols(self):
+        return set.union(*[conjunct.symbols() for conjunct in self.conjuncts])
+
 class Or(Sentence):
     def __init__(self, *disjuncts):
         for disjunct in disjuncts:
@@ -169,7 +171,6 @@ class Or(Sentence):
 
     def symbols(self):
         return set.union(*[disjunct.symbols() for disjunct in self.disjuncts])
-
 
 class Implication(Sentence):
     def __init__(self, antecedent, consequent):
@@ -234,6 +235,7 @@ class Biconditional(Sentence):
     def symbols(self):
         return set.union(self.left.symbols(), self.right.symbols())
 
+
 def model_check(knowledge, query):
     """ Checks if knowledge base entails query. """
 
@@ -274,62 +276,3 @@ def model_check(knowledge, query):
 
     # check that knowledge entails query / recursive function.
     return check_all(knowledge, query, symbols, dict())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

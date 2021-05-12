@@ -1,4 +1,4 @@
-from logic import *
+from BRLogic import *
 
 rain = Symbol("rain")
 hagrid = Symbol("hagrid")
