@@ -12,14 +12,14 @@ def generate_sample():
     # Mapping of distribution to sample generated. This
     parents = {}
 
-    # Loop over all states, assuming topological order.
+    # Loop over all states, assuming topological order.adskjlfh
     for state in model.states:
 
         # if we have a non-root node, sample conditional on parents.
         if isinstance(state.distribution, pomegranate.ConditionalProbabilityTable):
             sample[state.name] = state.distribution.sample(parent_values=parents)
 
-        # Otherwise, just smaple from the distribution alone.
+        # Otherwise, just sample from the distribution alone.
         else:
             sample[state.name] = state.distribution.sample()
 
@@ -40,3 +40,4 @@ for i in range(N):
         data.append(sample["appointment"])
 
 print(Counter(data))
+
